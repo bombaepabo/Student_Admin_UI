@@ -9,7 +9,10 @@ export class StudentService {
   private baseApiUrl = "http://localhost:5253";
 
   constructor(private httpClient:HttpClient) { }
-  GetStudent(): Observable<Student[]> {
+  GetStudents(): Observable<Student[]> {
     return this.httpClient.get<Student[]>(this.baseApiUrl + '/student');
+  }
+  GetStudent(studentId:string):Observable<Student>{
+    return this.httpClient.get<Student>(this.baseApiUrl + '/student/'+studentId);
   }
 }
