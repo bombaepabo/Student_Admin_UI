@@ -1,7 +1,7 @@
 
 <div class="page-header">
   <div class="container">
-    <h1>View Student</h1>
+    <h1>{{header}}</h1>
   </div>
 </div>
 <div class="container">
@@ -20,13 +20,15 @@
           <div class="col-xs-6">
             <mat-form-field appearance="outline">
               <mat-label>First Name</mat-label>
-              <input type="text" matInput [(ngModel)]="student.firstName" name="firstName">
+              <input type="text" matInput [(ngModel)]="student.firstName" name="firstName" required>
+              <mat-error>First name is required</mat-error>
             </mat-form-field>
           </div>
           <div class="col-xs-6">
             <mat-form-field appearance="outline">
               <mat-label>Last Name</mat-label >
-              <input type="text" matInput  [(ngModel)]="student.lastName" name="lastName">
+              <input type="text" matInput  [(ngModel)]="student.lastName" name="lastName" required>
+              <mat-error>Last name is required</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -34,10 +36,11 @@
           <div class="col-xs-12">
             <mat-form-field appearance="outline">
               <mat-label>Date Of Birth</mat-label>
-              <input matInput [matDatepicker]="$any(picker)" placeholder="Choose a date"  [(ngModel)]="student.dateOfBirth" name="dateOfBirth">
+              <input matInput [matDatepicker]="$any(picker)" placeholder="Choose a date"  [(ngModel)]="student.dateOfBirth" name="dateOfBirth" required>
               <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                 <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
               <mat-datpicker #startDate></mat-datpicker>
+              <mat-error>Date Of Birth is a required</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -45,13 +48,15 @@
           <div class="col-xs-6">
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
-              <input type="text" matInput  [(ngModel)]="student.email" name="email">
+              <input type="text" matInput  [(ngModel)]="student.email" name="email" required>
+              <mat-error>Email is a required</mat-error>
             </mat-form-field>
         </div>
         <div class="col-xs-6">
           <mat-form-field appearance="outline">
             <mat-label>Mobile</mat-label>
-            <input type="number" matInput  [(ngModel)]="student.mobile" name="mobile">
+            <input type="number" matInput  [(ngModel)]="student.mobile" name="mobile" required>
+            <mat-error>mobile phone is required</mat-error>
           </mat-form-field>
       </div>
         </div>
@@ -59,11 +64,12 @@
           <div class="col-xs-12">
             <mat-form-field appearance="outline">
               <mat-label>Gender</mat-label>
-              <mat-select [(ngModel)]="student.genderId" name="gender">
+              <mat-select [(ngModel)]="student.genderId" name="gender" required>
                   <mat-option *ngFor="let gender of genderList" [value]="gender.id">
                       {{gender.description}}
                   </mat-option>
               </mat-select>
+              <mat-error>Gender is a required</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -71,7 +77,9 @@
           <div class="col-xs-12">
             <mat-form-field appearance="outline">
               <mat-label>Physical Address</mat-label >
-              <textarea matInput  [(ngModel)]="student.address.physicalAddress" name="physicalAddress"></textarea>
+              <textarea matInput  [(ngModel)]="student.address.physicalAddress" name="physicalAddress" required="">
+              </textarea>
+              <mat-error>Physical Address is required </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -79,20 +87,42 @@
           <div class="col-xs-12">
             <mat-form-field appearance="outline">
               <mat-label>Postal Address</mat-label>
-              <textarea matInput  [(ngModel)]="student.address.postalAddress" name="postalAddress"></textarea>
+              <textarea matInput  [(ngModel)]="student.address.postalAddress" name="postalAddress" required></textarea>
+              <mat-error>Postal Address is required</mat-error>
             </mat-form-field>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <button mat-raised-button color="primary" (click)="onUpdate()">Save</button>
+            <div class="row">
+              <div class="row between-xs" *ngIf="!isNewStudent">
+                <button mat-raised-button color="primary" (click)="onUpdate()">Save</button>
+                <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+
+              </div>
+              <div class="row between-xs" *ngIf="isNewStudent">
+                <button mat-raised-button color="primary" (click)="onAdd()">Add</button>
+
+              </div>
+            </div>
           </div>
         </div>
       </form>
 
     </div>
     <div class="col-xs-6">
+      <div class="row center-xs">
+          <div class="image-container">
+            <img [src]="displayProfileImageUrl" alt="Profile Image">
 
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" *ngIf="!isNewStudent">
+          <input hidden type="file" #imageUpload (change)="uploadImage($event)">
+          <button mat-raised-button color="primary" (click)="imageUpload.click()">Upload Image</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
